@@ -1,5 +1,4 @@
-Node.js with Rabbitmq Example
----
+# Node.js with Rabbitmq Example
 
 ### Getting started
 
