@@ -9,10 +9,10 @@ const QUEUE_TYPES = {
   TEST_DELAYED: 'test-delayed',
 }
 
-const getDelayHeader = reserved_at => (reserved_at
+const getDelayHeader = reservedAt => (reservedAt
   ? {
     headers: {
-      'x-delay': moment(reserved_at).diff(moment()),
+      'x-delay': moment(reservedAt).diff(moment()),
     },
   }
   : {}
@@ -44,7 +44,7 @@ const queueService = (type, message) => {
       if (!isDelayed) return Producer.publish(exchange, queue, message)
 
       return Producer
-        .publish(exchange, queue, message, getDelayHeader(message.reserved_at))
+        .publish(exchange, queue, message, getDelayHeader(message.reservedAt))
         .then(() => {
           console.log('Queue added:', message)
           return message
