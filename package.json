@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Node.js with RabbitMQ",
   "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "author": {
     "name": "Seokjun Kim",
     "email": "colus001@me.com",
