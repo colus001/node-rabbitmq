@@ -1,13 +1,7 @@
-import moment from 'moment'
+const moment = require('moment')
 
-import Producer from '../producer'
-
-import { EXCHANGES, QUEUES } from '../rabbitmq'
-
-const QUEUE_TYPES = {
-  TEST_DIRECT: 'test-direct',
-  TEST_DELAYED: 'test-delayed',
-}
+const Producer = require('../producer')
+const { EXCHANGES, QUEUES } = require('../rabbitmq')
 
 const getDelayHeader = reservedAt => (reservedAt
   ? {
@@ -18,41 +12,23 @@ const getDelayHeader = reservedAt => (reservedAt
   : {}
 )
 
-const getIdentifiers = (type) => {
-  switch (type) {
-    case QUEUE_TYPES.TEST_DIRECT:
-      return {
-        exchange: EXCHANGES.DIRECT,
-        queue: QUEUES.MESSAGE,
-      }
-    case QUEUE_TYPES.TEST_DELAYED:
-      return {
-        exchange: EXCHANGES.DELAYED,
-        queue: QUEUES.MESSAGE,
-        isDelayed: true,
-      }
-    default:
-      return {}
-  }
-}
-
-const queueService = (type, message) => {
-  const { exchange, queue, isDelayed } = getIdentifiers(type)
+const queueService = ({ message, reservedAt }) => {
+  const exchange = reservedAt ? EXCHANGES.DELAYED : EXCHANGES.DIRECT
+  const queue = QUEUES.MESSAGE
 
   return {
     add() {
-      if (!isDelayed) return Producer.publish(exchange, queue, message)
-
       return Producer
-        .publish(exchange, queue, message, getDelayHeader(message.reservedAt))
+        .publish(exchange, queue, message, getDelayHeader(reservedAt))
         .then(() => {
           console.log('Queue added:', message)
-          return message
+          return {
+            exchange,
+            queue,
+          }
         })
     },
   }
 }
 
-exports.QUEUE_TYPES = QUEUE_TYPES
-
-export default queueService
+module.exports = queueService
