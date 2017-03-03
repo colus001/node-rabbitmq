@@ -1,4 +1,4 @@
-import { createChannel, EXCHANGES } from '../rabbitmq'
+const { createChannel, EXCHANGES } = require('../rabbitmq')
 
 const A_SECOND = 1000
 
@@ -24,8 +24,7 @@ const emit = () => {
   .catch(e => console.error(e))
 }
 
-
-export default {
+module.exports = {
   publish,
   emit,
 }

@@ -1,7 +1,7 @@
 const Promise = require('bluebird')
 const amqp = require('amqplib')
 
-const RABBITMQ_URI = 'amqp://colus001:12345678@localhost:85672'
+const RABBITMQ_URI = 'amqp://colus001:12345678@localhost:25672'
 
 const QUEUES = {
   MESSAGE: 'message',
@@ -21,10 +21,6 @@ const createChannel = () => {
     .then(connection => connection.createChannel())
     .then(ch => (channel = ch || true) && channel)
 }
-
-exports.QUEUES = QUEUES
-exports.EXCHANGES = EXCHANGES
-exports.createChannel = createChannel
 
 module.exports = {
   QUEUES,
