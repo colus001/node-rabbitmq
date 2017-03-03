@@ -8,5 +8,5 @@ services:
       - RABBITMQ_DEFAULT_USER=colus001
       - RABBITMQ_DEFAULT_PASS=12345678
     ports:
-      - 85672:5672
-      - 95672:15672
+      - 25672:5672
+      - 35672:15672
