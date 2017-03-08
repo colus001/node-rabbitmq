@@ -67,7 +67,7 @@ const bind = () => {
       channel.bindQueue(queue, directExchange, QUEUES.MESSAGE).then(() => queue),
       channel.bindQueue(queue, delayedExchange, QUEUES.MESSAGE).then(() => queue),
     ])
-    .then(queues => Promise.map(queues, (queue) => {
+    .spread((...queues) => Promise.map(queues, (queue) => {
       const Consumer = getConsumer(queue)
       if (!Consumer) console.error(`CONSUMER_NOT_FOUND: ${queue}`)
       return Consumer && consume(Consumer, channel, queue)
